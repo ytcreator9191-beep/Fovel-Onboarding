@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FOVEL | Website Onboarding</title>
+<meta name="description" content="Tell FOVEL about your business so we can start building your website.">
+<meta name="theme-color" content="#E4ECE7">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   1. TOKENS
+   ========================================================================== */
+:root{
+  --pearl:#F5F7F4;
+  --sage:#DDE8E1;
+  --haze:#DCE1F3;
+  --champagne:#F1E6D0;
+  --spruce:#12332D;
+  --spruce-2:#1E4A41;
+  --brass:#B08A4A;
+  --brass-soft:#E9D9B6;
+  --ink:#1A2B27;
+  --muted:#5B6C67;
+  --line:#D3DDD8;
+  --danger:#B23B2A;
+  --ok:#2F7A5E;
+
+  --serif:"Instrument Serif","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+
+  --tA:#DDE8E1; --tB:#DCE1F3;           /* step tints, changed per step */
+  --p:0%;                                /* progress */
+  --ease:cubic-bezier(.22,.8,.24,1);
+}
+body[data-step="0"]{--tA:#DDE8E1;--tB:#DCE1F3}
+body[data-step="1"]{--tA:#DCE1F3;--tB:#E9E2F2}
+body[data-step="2"]{--tA:#E3EBD8;--tB:#DDE8E1}
+body[data-step="3"]{--tA:#F1E6D0;--tB:#E3EBD8}
+body[data-step="4"]{--tA:#E6DFF1;--tB:#DCE1F3}
+body[data-step="5"]{--tA:#DDE8E1;--tB:#F1E6D0}
+
+/* ==========================================================================
+   2. BASE
+   ========================================================================== */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;
+  font-family:var(--sans);font-size:16px;line-height:1.55;color:var(--ink);
+  background:linear-gradient(180deg,#F7F9F6 0%,#EDF2EE 100%);
+  -webkit-font-smoothing:antialiased;
+}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3,p{margin:0}
+[hidden]{display:none !important}
+:focus-visible{outline:3px solid var(--brass);outline-offset:3px;border-radius:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ==========================================================================
+   3. BACKGROUND SYSTEM (fixed, layered)
+   ========================================================================== */
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
+  background:
+    radial-gradient(1100px 700px at 4% -8%, #D5E5DB 0%, transparent 62%),
+    radial-gradient(900px 700px at 102% 2%, #E1E5F7 0%, transparent 60%),
+    radial-gradient(900px 700px at 78% 112%, #F3E8D2 0%, transparent 58%),
+    radial-gradient(700px 600px at -6% 100%, #E4ECE5 0%, transparent 60%);
+}
+.orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.75;transition:background-color 1.2s ease}
+.orb.o1{width:520px;height:520px;left:-140px;top:12%;background:var(--tA);animation:drift 26s ease-in-out infinite alternate}
+.orb.o2{width:460px;height:460px;right:-120px;top:38%;background:var(--tB);animation:drift 32s ease-in-out -8s infinite alternate-reverse}
+.orb.o3{width:380px;height:380px;left:42%;bottom:-160px;background:var(--champagne);opacity:.7;animation:drift 38s ease-in-out -14s infinite alternate}
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(40px,-36px,0) scale(1.08)}}
+.rings{position:absolute;inset:0;width:100%;height:100%}
+.rings circle{fill:none;stroke:var(--brass);stroke-width:1;opacity:.22}
+.rings .g{stroke:var(--spruce);opacity:.07}
+.dots{position:absolute;inset:0;
+  background-image:radial-gradient(rgba(18,51,45,.16) 1px,transparent 1.2px);
+  background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,transparent 30%,#000 100%);
+          mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,transparent 30%,#000 100%);
+  opacity:.55}
+.grain{position:absolute;inset:0;opacity:.07;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .07 0 0 0 0 .2 0 0 0 0 .18 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ==========================================================================
+   4. LAYOUT
+   ========================================================================== */
+.shell{max-width:1260px;margin:0 auto;padding:48px 40px 72px;display:grid;grid-template-columns:360px minmax(0,1fr);gap:64px;align-items:start}
+.rail{position:sticky;top:40px;display:flex;flex-direction:column;gap:30px}
+.stage{min-width:0}
+
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--spruce)}
+.brand svg{width:34px;height:34px;flex:none}
+.brand b{font-family:var(--serif);font-weight:400;font-size:30px;letter-spacing:.12em;line-height:1}
+
+.rail h1{font-family:var(--serif);font-weight:400;font-size:clamp(48px,4.6vw,66px);line-height:.98;letter-spacing:-.025em;color:var(--spruce)}
+.rail .lede{color:var(--muted);font-size:17px;max-width:30ch;margin-top:16px}
+
+.steps{list-style:none;margin:0;padding:0}
+.steps li{position:relative}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:17px;top:46px;bottom:-6px;width:2px;background:var(--line);border-radius:2px}
+.steps li.done:not(:last-child)::after{background:linear-gradient(var(--brass),var(--brass-soft))}
+.si{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:center;padding:7px 0;cursor:pointer;border-radius:12px}
+.si:focus-visible{outline:3px solid var(--brass);outline-offset:3px}
+.si .dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:14px;border:1.5px solid var(--line);background:#fff;color:var(--muted);transition:all .4s var(--ease);position:relative;z-index:1}
+.si .dot svg{width:16px;height:16px;display:none}
+.si .t{font-weight:600;font-size:15.5px;line-height:1.25;color:var(--ink)}
+.si .s{font-size:13.5px;color:var(--muted);line-height:1.3}
+li.current .dot{background:var(--spruce);border-color:var(--spruce);color:#fff;box-shadow:0 0 0 5px rgba(18,51,45,.1)}
+li.done .dot{background:var(--brass);border-color:var(--brass);color:#fff}
+li.done .dot span{display:none}
+li.done .dot svg{display:block}
+li.locked .si{cursor:default}
+li.locked .t,li.locked .s{opacity:.55}
+
+.prog{background:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.9);border-radius:18px;padding:16px 18px;box-shadow:0 10px 30px -18px rgba(18,51,45,.35)}
+.prog-top{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;color:var(--muted);margin-bottom:10px}
+.prog-top strong{font-family:var(--serif);font-weight:400;font-size:28px;color:var(--spruce);line-height:1}
+.pbar{height:8px;border-radius:99px;background:rgba(18,51,45,.1);overflow:hidden}
+.pbar i{display:block;height:100%;width:var(--p);border-radius:99px;background:linear-gradient(90deg,var(--spruce-2),var(--brass));transition:width .7s var(--ease)}
+.save-note{font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.save-note button{all:unset;cursor:pointer;color:var(--spruce);text-decoration:underline;text-underline-offset:3px}
+.save-note button:focus-visible{outline:3px solid var(--brass);outline-offset:3px}
+
+.topbar{display:none}
+
+/* ==========================================================================
+   5. CARD
+   ========================================================================== */
+.card{
+  position:relative;border-radius:30px;
+  background:rgba(255,255,255,.74);
+  -webkit-backdrop-filter:blur(20px) saturate(1.2);backdrop-filter:blur(20px) saturate(1.2);
+  border:1px solid rgba(255,255,255,.95);
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 40px 70px -40px rgba(18,51,45,.32),0 10px 28px -14px rgba(18,51,45,.14);
+  animation:cardIn .9s var(--ease) both;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+.card-head{position:relative;overflow:hidden;border-radius:29px 29px 0 0;padding:44px 48px 36px;
+  background:linear-gradient(125deg,var(--tA) 0%,rgba(255,255,255,.55) 55%,var(--tB) 100%);
+  border-bottom:1px solid rgba(18,51,45,.07)}
+.card-head::before,.card-head::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(176,138,74,.35);pointer-events:none}
+.card-head::before{width:340px;height:340px;right:-90px;top:-170px;box-shadow:0 0 0 38px rgba(176,138,74,.06),0 0 0 76px rgba(176,138,74,.045)}
+.card-head::after{width:150px;height:150px;right:130px;bottom:-95px;border-color:rgba(18,51,45,.14)}
+.step-count{font-size:14px;color:var(--spruce-2);font-weight:500;margin-bottom:10px;position:relative}
+.card-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(36px,4vw,50px);line-height:1.03;letter-spacing:-.02em;color:var(--spruce);position:relative;outline:none}
+.card-head p.desc{margin-top:12px;color:#40524C;max-width:56ch;position:relative;font-size:16.5px}
+
+.card-body{padding:40px 48px 12px}
+.legend{font-size:14px;color:var(--muted);margin-bottom:30px;display:flex;align-items:center;gap:8px}
+.legend .rq{margin:0}
+
+.step.in-fwd{animation:inFwd .55s var(--ease) both}
+.step.in-back{animation:inBack .55s var(--ease) both}
+@keyframes inFwd{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
+@keyframes inBack{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
+
+.nav{position:sticky;bottom:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:20px 48px;border-radius:0 0 29px 29px;margin-top:20px;
+  background:rgba(247,249,246,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-top:1px solid rgba(18,51,45,.08)}
+
+/* ==========================================================================
+   6. FORM CONTROLS
+   ========================================================================== */
+.field{margin-bottom:34px;position:relative}
+.field>.lbl,.field>legend.lbl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-weight:600;font-size:16px;color:var(--ink);margin-bottom:6px;padding:0;line-height:1.35}
+fieldset.field{border:0;padding:0;margin:0 0 34px;min-width:0}
+.rq{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--brass);color:#fff;font-size:12px;font-weight:700;line-height:1;margin-left:2px}
+.opt{font-size:12.5px;font-weight:500;color:var(--muted);background:rgba(18,51,45,.07);padding:2px 9px;border-radius:99px}
+.hint{font-size:14.5px;color:var(--muted);margin-bottom:12px;max-width:62ch}
+.hint ul{margin:6px 0 0;padding-left:18px}
+.hint li{margin:2px 0}
+
+input[type=text],input[type=tel],input[type=email],input[type=url],textarea{
+  width:100%;display:block;padding:15px 16px;min-height:54px;border-radius:15px;
+  border:1.5px solid var(--line);background:rgba(255,255,255,.92);
+  font-size:16px;line-height:1.45;transition:border-color .25s,box-shadow .25s,background .25s;
+  -webkit-appearance:none;appearance:none}
+textarea{resize:vertical;min-height:132px}
+textarea.lg{min-height:210px}
+textarea.md{min-height:160px}
+::placeholder{color:#8C9A95;opacity:1}
+input:hover,textarea:hover{border-color:#B7C6BF}
+input:focus,textarea:focus{outline:none;border-color:var(--spruce);box-shadow:0 0 0 4px rgba(18,51,45,.1);background:#fff}
+
+.err{display:none;margin-top:8px;font-size:14px;font-weight:500;color:var(--danger);align-items:center;gap:6px}
+.field.invalid>.err,.field.invalid .err.own{display:flex}
+.field.invalid input[type=text],.field.invalid input[type=tel],.field.invalid input[type=email],.field.invalid textarea{border-color:var(--danger);background:#FFFAF8}
+.field.invalid .choice{border-color:#E5B9AF}
+.field.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+
+.choices{display:grid;gap:12px}
+.choices.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.choices.pages{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.choice{position:relative;display:flex;gap:14px;align-items:center;padding:16px 18px;min-height:60px;
+  border:1.5px solid var(--line);border-radius:16px;background:rgba(255,255,255,.85);cursor:pointer;
+  transition:border-color .25s,background .25s,box-shadow .25s,transform .25s var(--ease)}
+.choice:hover{border-color:#A9BBB3;transform:translateY(-1px)}
+.choice input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.choice .mark{flex:none;width:24px;height:24px;border:1.5px solid #AFC0B8;border-radius:8px;background:#fff;display:grid;place-items:center;transition:all .25s var(--ease)}
+.choice.radio .mark{border-radius:50%}
+.choice .mark::after{content:"";width:11px;height:6px;border-left:2.5px solid #fff;border-bottom:2.5px solid #fff;transform:rotate(-45deg) scale(0);margin-top:-2px;transition:transform .25s var(--ease)}
+.choice.radio .mark::after{width:10px;height:10px;border:0;border-radius:50%;background:#fff;margin:0;transform:scale(0)}
+.choice input:checked~.mark{background:var(--spruce);border-color:var(--spruce)}
+.choice input:checked~.mark::after{transform:rotate(-45deg) scale(1)}
+.choice.radio input:checked~.mark::after{transform:scale(1)}
+.choice:has(input:checked){border-color:var(--spruce);background:linear-gradient(135deg,#fff 0%,#EDF4F0 100%);box-shadow:0 12px 24px -16px rgba(18,51,45,.45)}
+.choice:has(input:focus-visible){outline:3px solid var(--brass);outline-offset:3px}
+.choice .ct{font-weight:500;line-height:1.35}
+.choice .ct small{display:block;color:var(--muted);font-weight:400;font-size:13.5px;margin-top:2px}
+
+.reveal{display:grid;grid-template-rows:0fr;opacity:0;visibility:hidden;transition:grid-template-rows .45s var(--ease),opacity .3s ease,visibility 0s .45s}
+.reveal.open{grid-template-rows:1fr;opacity:1;visibility:visible;transition-delay:0s}
+.reveal>.inner{overflow:hidden;min-height:0;padding:0 4px;margin:0 -4px}
+.reveal>.inner>.sub{padding-top:14px;padding-bottom:4px}
+.sub label.mini{display:block;font-size:14.5px;font-weight:600;margin-bottom:6px}
+
+.social-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 18px}
+.social-grid .field{margin:0}
+.social-grid .field label{display:block;font-size:14.5px;font-weight:600;margin-bottom:6px}
+.social-grid .field.wide{grid-column:1/-1}
+
+.link-btn{all:unset;cursor:pointer;font-size:14px;font-weight:500;color:var(--spruce);text-decoration:underline;text-underline-offset:3px}
+.link-btn:focus-visible{outline:3px solid var(--brass);outline-offset:3px}
+.row-between{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.row-between .hint{margin:0}
+
+.swatches{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+.sw{all:unset;box-sizing:border-box;width:40px;height:40px;border-radius:50%;cursor:pointer;position:relative;border:3px solid #fff;box-shadow:0 0 0 1px rgba(18,51,45,.2),0 6px 12px -6px rgba(18,51,45,.4);transition:transform .25s var(--ease),box-shadow .25s}
+.sw:hover{transform:scale(1.1)}
+.sw:focus-visible{outline:3px solid var(--brass);outline-offset:3px}
+.sw.on{box-shadow:0 0 0 2.5px var(--spruce),0 6px 12px -6px rgba(18,51,45,.4)}
+.sw.pick{background:conic-gradient(#e2574c,#e9a23b,#f2d94e,#52b788,#3a86d6,#7d5ac7,#e2574c);overflow:hidden}
+.sw.pick input{position:absolute;inset:-8px;width:60px;height:60px;opacity:0;cursor:pointer;border:0;padding:0}
+
+/* ==========================================================================
+   7. BUTTONS
+   ========================================================================== */
+.btn{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 30px;border-radius:99px;
+  font-weight:600;font-size:16px;cursor:pointer;transition:transform .25s var(--ease),box-shadow .3s,background .3s,border-color .3s;user-select:none;-webkit-tap-highlight-color:transparent;text-align:center}
+.btn:focus-visible{outline:3px solid var(--brass);outline-offset:3px}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.primary{color:#F6F8F5;background:linear-gradient(180deg,#245549 0%,#12332D 100%);
+  box-shadow:0 0 0 1px rgba(18,51,45,.9),0 1px 0 rgba(255,255,255,.22) inset,0 16px 28px -14px rgba(18,51,45,.7)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(18,51,45,.9),0 1px 0 rgba(255,255,255,.22) inset,0 22px 34px -14px rgba(18,51,45,.75)}
+.btn.primary:active{transform:translateY(0)}
+.btn.ghost{color:var(--spruce);border:1.5px solid var(--line);background:rgba(255,255,255,.7)}
+.btn.ghost:hover{border-color:var(--spruce);background:#fff}
+.btn.gold{color:var(--spruce);background:linear-gradient(180deg,#F1E1BE,#E3CB93);box-shadow:0 0 0 1px rgba(176,138,74,.6),0 12px 22px -14px rgba(176,138,74,.9)}
+.btn.gold:hover{transform:translateY(-2px)}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.btn.back{padding:0 22px 0 16px}
+.btn.back[hidden]{display:inline-flex !important;visibility:hidden}
+
+/* ==========================================================================
+   8. REVIEW STEP
+   ========================================================================== */
+.alert{border:1.5px solid #E5B9AF;background:#FFF6F3;border-radius:18px;padding:18px 20px;margin-bottom:28px;color:#7B2A1D}
+.alert strong{display:block;margin-bottom:8px}
+.alert ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.alert button{all:unset;cursor:pointer;font-size:14px;font-weight:500;padding:6px 14px;border-radius:99px;background:#fff;border:1px solid #E5B9AF;color:#7B2A1D}
+.alert button:hover{background:#FFEDE8}
+.alert button:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+
+.rv-group{margin-bottom:30px}
+.rv-group h3{font-family:var(--serif);font-weight:400;font-size:28px;letter-spacing:-.01em;color:var(--spruce);margin-bottom:10px;display:flex;align-items:center;gap:14px}
+.rv-group h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--brass-soft),transparent)}
+.rv-row{display:grid;grid-template-columns:190px minmax(0,1fr) auto;gap:6px 18px;padding:13px 0;border-bottom:1px solid rgba(18,51,45,.08);align-items:start}
+.rv-k{font-size:14px;color:var(--muted);font-weight:500;padding-top:2px}
+.rv-v{white-space:pre-wrap;overflow-wrap:anywhere;font-size:15.5px}
+.rv-v.none{color:#8C9A95;font-style:italic}
+.rv-edit{all:unset;cursor:pointer;font-size:14px;font-weight:600;color:var(--spruce);padding:2px 10px;border-radius:99px;border:1px solid var(--line);background:#fff;transition:background .2s,border-color .2s}
+.rv-edit:hover{border-color:var(--spruce)}
+.rv-edit:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+
+.meter{background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin:8px 0 14px}
+.meter-top{display:flex;justify-content:space-between;gap:12px;font-size:14.5px;margin-bottom:10px;flex-wrap:wrap}
+.meter-top strong{font-weight:600}
+.meter .pbar i{width:var(--m,0%);background:linear-gradient(90deg,#4B9A7C,#4B9A7C)}
+.meter.warn .pbar i{background:linear-gradient(90deg,#C99A3A,#C99A3A)}
+.meter.over .pbar i{background:linear-gradient(90deg,#C4523F,#C4523F)}
+details.preview{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.7);margin-bottom:26px}
+details.preview summary{padding:14px 18px;cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details.preview summary::-webkit-details-marker{display:none}
+details.preview summary::after{content:"+";font-size:22px;line-height:1;color:var(--brass);transition:transform .3s}
+details.preview[open] summary::after{transform:rotate(45deg)}
+details.preview summary:focus-visible{outline:3px solid var(--brass);outline-offset:-3px;border-radius:14px}
+details.preview pre{margin:0;padding:4px 18px 18px;white-space:pre-wrap;overflow-wrap:anywhere;font-family:var(--sans);font-size:14.5px;line-height:1.6;max-height:360px;overflow:auto;color:#2C3E39}
+
+.notice{position:relative;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;padding:24px 26px;border-radius:22px;margin-bottom:26px;
+  background:linear-gradient(135deg,#FFFFFF 0%,#FAF3E3 100%);border:1.5px solid var(--brass-soft);
+  box-shadow:0 20px 36px -26px rgba(176,138,74,.9);overflow:hidden}
+.notice::before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;right:-80px;top:-110px;border:1px solid rgba(176,138,74,.35);box-shadow:0 0 0 28px rgba(176,138,74,.07)}
+.notice .ico{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(160deg,#245549,#12332D);color:#fff;position:relative}
+.notice .ico svg{width:26px;height:26px}
+.notice p{font-size:17px;line-height:1.55;color:var(--spruce);position:relative;font-weight:500}
+
+.panel{border-radius:22px;padding:22px 24px;margin-bottom:26px;border:1.5px solid;animation:inFwd .5s var(--ease) both}
+.panel.info{background:#F0F6F3;border-color:#BFD6CB}
+.panel.long{background:#FFF8EA;border-color:#E6CF9C}
+.panel h4{margin:0 0 6px;font-size:17px;font-weight:600;color:var(--spruce)}
+.panel p{font-size:15.5px;color:#34463F;max-width:64ch}
+.panel .btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.panel .btn{min-height:48px;padding:0 22px;font-size:15px}
+
+/* testimonial entries */
+.tm-row{background:rgba(255,255,255,.7);border:1.5px solid var(--line);border-radius:18px;padding:16px 18px 18px;margin-bottom:14px;animation:inFwd .45s var(--ease) both}
+.tm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.tm-n{font-weight:600;font-size:15px;color:var(--spruce)}
+.tm-row label.mini{display:block;font-size:14.5px;font-weight:600;margin-bottom:6px}
+.tm-row .tm-name{margin-bottom:14px}
+.tm-row textarea{min-height:120px}
+.field.invalid .tm-row input[type=text]{border-color:var(--line);background:rgba(255,255,255,.92)}
+.field.invalid .tm-row textarea{border-color:var(--line);background:rgba(255,255,255,.92)}
+.field.invalid .tm-row.bad input[type=text],.field.invalid .tm-row.bad textarea{border-color:var(--danger);background:#FFFAF8}
+#tmAdd{min-height:48px;padding:0 22px;font-size:15px;margin-top:2px}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);opacity:0;pointer-events:none;z-index:50;max-width:min(92vw,460px);
+  background:var(--spruce);color:#fff;padding:14px 20px;border-radius:16px;font-size:15px;box-shadow:0 24px 40px -18px rgba(18,51,45,.7);transition:all .45s var(--ease);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ==========================================================================
+   9. RESPONSIVE
+   ========================================================================== */
+@media (max-width:1080px){
+  .shell{grid-template-columns:300px minmax(0,1fr);gap:40px;padding:40px 28px 64px}
+  .card-head,.card-body{padding-left:34px;padding-right:34px}
+  .nav{padding-left:34px;padding-right:34px}
+}
+@media (max-width:900px){
+  .shell{display:block;padding:0 14px 40px}
+  .rail{display:none}
+  .topbar{display:block;position:sticky;top:0;z-index:20;margin:0 -14px 14px;padding:calc(10px + env(safe-area-inset-top)) 18px 12px;
+    background:rgba(245,248,245,.86);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid rgba(18,51,45,.08)}
+  .topbar .row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .topbar .brand svg{width:26px;height:26px}
+  .topbar .brand b{font-size:24px}
+  .topbar .meta{font-size:13.5px;color:var(--muted);font-weight:500}
+  .topbar .meta strong{color:var(--spruce);font-weight:700}
+  .topbar .pbar{height:6px}
+  .card{border-radius:24px}
+  .card-head{padding:28px 22px 24px;border-radius:23px 23px 0 0}
+  .card-head::before{width:240px;height:240px;right:-90px;top:-130px}
+  .card-head h2{font-size:36px}
+  .card-head p.desc{font-size:15.5px}
+  .card-body{padding:26px 20px 4px}
+  .nav{padding:14px 16px calc(14px + env(safe-area-inset-bottom));border-radius:0 0 23px 23px}
+  .nav .btn{min-height:54px}
+  .nav .btn.primary{flex:1;padding:0 18px}
+  .nav .btn.back{padding:0 18px 0 12px}
+  .rv-row{grid-template-columns:1fr auto;gap:2px 12px}
+  .rv-k{grid-column:1/2}
+  .rv-edit{grid-column:2/3;grid-row:1/2;align-self:start}
+  .rv-v{grid-column:1/-1}
+  .toast{bottom:96px}
+}
+@media (max-width:560px){
+  .choices.two,.social-grid{grid-template-columns:1fr}
+  .choices.pages{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .notice{grid-template-columns:1fr;gap:14px;padding:22px 20px}
+  .notice p{font-size:16px}
+  .field{margin-bottom:30px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
+}
+</style>
+</head>
+
+<body data-step="0">
+
+<!-- ======= Layered background ======= -->
+<div class="bg" aria-hidden="true">
+  <i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i>
+  <svg class="rings" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <circle cx="1280" cy="120" r="150"/><circle cx="1280" cy="120" r="230"/><circle cx="1280" cy="120" r="320"/>
+    <circle class="g" cx="130" cy="800" r="180"/><circle class="g" cx="130" cy="800" r="270"/><circle class="g" cx="130" cy="800" r="370"/>
+    <circle cx="720" cy="1000" r="260"/>
+  </svg>
+  <div class="dots"></div>
+  <div class="grain"></div>
+</div>
+
+<noscript><p style="padding:24px;font-family:sans-serif">This form needs JavaScript to run. Please enable it and reload the page.</p></noscript>
+
+<!-- ======= Mobile / tablet top bar ======= -->
+<header class="topbar">
+  <div class="row">
+    <span class="brand">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="15" cy="20" r="11" fill="none" stroke="#12332D" stroke-width="2"/><circle cx="25" cy="20" r="11" fill="none" stroke="#B08A4A" stroke-width="2"/></svg>
+      <b>FOVEL</b>
+    </span>
+    <span class="meta">Step <strong data-cur>1</strong> of <span data-total>6</span> &nbsp;&middot;&nbsp; <strong data-pct>0%</strong></span>
+  </div>
+  <div class="pbar" role="progressbar" aria-label="Form completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-pbar><i></i></div>
+</header>
+
+<div class="shell">
+
+  <!-- ======= Desktop rail ======= -->
+  <aside class="rail" aria-label="Form progress">
+    <div>
+      <span class="brand">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="15" cy="20" r="11" fill="none" stroke="#12332D" stroke-width="2"/><circle cx="25" cy="20" r="11" fill="none" stroke="#B08A4A" stroke-width="2"/></svg>
+        <b>FOVEL</b>
+      </span>
+    </div>
+    <div>
+      <h1>Your website brief</h1>
+      <p class="lede">You&rsquo;ve seen the walkthrough, so we&rsquo;ll only ask what we need to start building.</p>
+    </div>
+    <nav aria-label="Form steps"><ol class="steps" id="stepList"></ol></nav>
+    <div class="prog">
+      <div class="prog-top"><span>Required answers complete</span><strong data-pct>0%</strong></div>
+      <div class="pbar" role="progressbar" aria-label="Form completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-pbar><i></i></div>
+    </div>
+    <p class="save-note"><span id="saveText">Answers save on this device as you go.</span><button type="button" id="startOver">Start over</button></p>
+  </aside>
+
+  <!-- ======= Form ======= -->
+  <main class="stage">
+    <form id="form" novalidate autocomplete="on">
+      <div class="card">
+
+        <header class="card-head">
+          <p class="step-count">Step <span data-cur>1</span> of <span data-total>6</span></p>
+          <h2 id="stepTitle" tabindex="-1">Your business</h2>
+          <p class="desc" id="stepDesc"></p>
+        </header>
+
+        <div class="card-body">
+
+          <!-- ========== STEP 1 — Your business ========== -->
+          <section class="step" data-title="Your business"
+                   data-sub="Owner, name, services"
+                   data-desc="Start with the basics. Your answers save on this device as you go, so you can leave and come back.">
+            <p class="legend"><span class="rq" aria-hidden="true">*</span> Required. Questions marked Optional can be skipped.</p>
+
+            <div class="field" id="w-owner">
+              <label class="lbl" for="owner">Business owner&rsquo;s name <span class="rq" aria-hidden="true">*</span></label>
+              <input type="text" id="owner" autocomplete="name" placeholder="Full name of the business owner" aria-required="true">
+              <p class="err" role="alert"></p>
+            </div>
+
+            <div class="field" id="w-business">
+              <label class="lbl" for="business">Business name <span class="rq" aria-hidden="true">*</span></label>
+              <input type="text" id="business" autocomplete="organization" placeholder="Official registered business name" aria-required="true">
+              <p class="err" role="alert"></p>
+            </div>
+
+            <div class="field" id="w-url">
+              <label class="lbl" for="url">Current website <span class="opt">Optional</span></label>
+              <p class="hint">Only if you already have a website.</p>
+              <input type="text" id="url" inputmode="url" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="www.yourbusiness.com">
+              <p class="err" role="alert"></p>
+            </div>
+
+            <div class="field" id="w-services">
+              <label class="lbl" for="services">Services offered <span class="rq" aria-hidden="true">*</span></label>
+              <p class="hint">List every service your business offers. A short note on each is helpful.</p>
+              <textarea id="services" class="lg" placeholder="For example: Kitchen remodeling, bathroom renovation, custom cabinetry, free on-site estimates&hellip;" aria-required="true"></textarea>
+              <p class="err" role="alert"></p>
+            </div>
+
+            <div class="field" id="w-address">
+              <label class="lbl" for="address">Business address <span class="rq" aria-hidden="true">*</span></label>
+              <input type="text" id="address" autocomplete="street-address" placeholder="Street, city, state or province, postal code, country" aria-required="true">
+              <p class="err" role="alert"></p>
+            </div>
+          </section>
+
+          <!-- ========== STEP 2 — Contact ========== -->
+          <section class="step" hidden data-title="How to reach you"
+                   data-sub="Phone, email, social"
+                   data-desc="These are the details visitors will use to contact your business.">
+            <p class="legend"><span class="rq" aria-hidden="true">*</span> Required. Questions marked Optional can be skipped.</p>
+
+            <div class="field" id="w-phone">
+              <label class="lbl" for="phone">Business phone number <span class="rq" aria-hidden="true">*</span></label>
+              <p class="hint">The official number for your business. Include the country code.</p>
+              <input type="tel" id="phone" autocomplete="tel" inputmode="tel" placeholder="+1 555 010 1234" aria-required="true">
+              <p class="err" role="alert"></p>
+            </div>
+
+            <div class="field" id="w-email">
+              <label class="lbl" for="email">Business email address <span class="rq" aria-hidden="true">*</span></label>
+              <input type="email" id="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="hello@yourbusiness.com" aria-required="true">
+              <p class="err" role="alert"></p>
+            </div>
+
+            <div class="field" id="w-whatsapp">
+              <label class="lbl" for="whatsapp">Business WhatsApp number <span class="opt">Optional</span></label>
+              <p class="hint">The WhatsApp number you want displayed on your website. Include the country code.</p>
+              <input type="tel" id="whatsapp" inputmode="tel" autocomplete="off" placeholder="+1 555 010 1234">
+              <p class="err" role="alert"></p>
+            </div>
+
+            <fieldset class="field" id="w-social-group" style="margin-bottom:6px">
+              <legend class="lbl">Social media links <span class="opt">Optional</span></legend>
+              <p class="hint">Paste the link to each profile you want connected to your website. Skip any you don&rsquo;t use.</p>
+              <div class="social-grid" id="socialGrid"></div>
+            </fieldset>
+          </section>
+
+          <!-- ========== STEP 3 — Content ========== -->
+          <section class="step" hidden data-title="Your website content"
+                   data-sub="Pages, story, reviews"
+                   data-desc="Choose the pages you need and tell us your story. Write as much or as little as you like.">
+            <p class="legend"><span class="rq" aria-hidden="true">*</span> Required. Questions marked Optional can be skipped.</p>
+
+            <fieldset class="field" id="w-pages">
+              <legend class="lbl">Which pages should your website include? <span class="rq" aria-hidden="true">*</span></legend>
+              <div class="row-between">
+                <p class="hint">Select every page you want. You can change your mind at any time.</p>
+                <button type="button" class="link-btn" id="togglePages">Select all</button>
+              </div>
+              <div class="choices pages">
+                <label class="choice"><input type="checkbox" name="pages" value="Home"><span class="mark"></span><span class="ct">Home</span></label>
+                <label class="choice"><input type="checkbox" name="pages" value="Services"><span class="mark"></span><span class="ct">Services</span></label>
+                <label class="choice"><input type="checkbox" name="pages" value="About"><span class="mark"></span><span class="ct">About</span></label>
+                <label class="choice"><input type="checkbox" name="pages" value="Portfolio"><span class="mark"></span><span class="ct">Portfolio</span></label>
+                <label class="choice"><input type="checkbox" name="pages" value="Contact"><span class="mark"></span><span class="ct">Contact</span></label>
+              </div>
+              <p class="err" role="alert"></p>
+            </fieldset>
+
+            <div class="field" id="w-about">
+              <label class="lbl" for="about">About the business <span class="opt">Optional</span></label>
+              <div class="hint">Introduce your business in as much detail as you can. You don&rsquo;t need to answer every point:
+                <ul>
+                  <li>Your business background</li>
+                  <li>How and when it started</li>
+                  <li>Your journey and history</li>
+                  <li>Your experience</li>
+                  <li>What makes your business different</li>
+                </ul>
+              </div>
+              <textarea id="about" class="lg" placeholder="Tell us your story&hellip;"></textarea>
+              <p class="err" role="alert"></p>
+            </div>
+
+            <fieldset class="field" id="w-testimonials">
+              <legend class="lbl">Do you have customer testimonials or reviews to feature? <span class="rq" aria-hidden="true">*</span></legend>
+              <div class="choices">
+                <label class="choice radio"><input type="radio" name="testimonials" value="Yes, I have customer testimonials or reviews."><span class="mark"></span><span class="ct">Yes, I have customer testimonials or reviews.</span></label>
+                <label class="choice radio"><input type="radio" name="testimonials" value="No, I don't have any."><span class="mark"></span><span class="ct">No, I don&rsquo;t have any.</span></label>
+                <label class="choice radio"><input type="radio" name="testimonials" value="I want to add them later."><span class="mark"></span><span class="ct">I want to add them later.</span></label>
+              </div>
+              <div class="reveal" data-when="testimonials:Yes, I have customer testimonials or reviews."><div class="inner"><div class="sub">
+                <p class="hint">Add each customer&rsquo;s name and their review. Press &ldquo;Add another testimonial&rdquo; as many times as you need.</p>
+                <div id="tmList"></div>
+                <button type="button" class="btn ghost" id="tmAdd">Add another testimonial</button>
+              </div></div></div>
+              <p class="err" role="alert"></p>
+            </fieldset>
+
+            <fieldset class="field" id="w-imagePerm">
+              <legend class="lbl">May we use images of your work on your social media or Google Maps? <span class="rq" aria-hidden="true">*</span></legend>
+              <p class="hint">We will ask you for the images themselves separately on WhatsApp.</p>
+              <div class="choices two">
+                <label class="choice radio"><input type="radio" name="imagePerm" value="Yes"><span class="mark"></span><span class="ct">Yes</span></label>
+                <label class="choice radio"><input type="radio" name="imagePerm" value="No"><span class="mark"></span><span class="ct">No</span></label>
+              </div>
+              <p class="err" role="alert"></p>
+            </fieldset>
+          </section>
+
+          <!-- ========== STEP 4 — Goals & audience ========== -->
+          <section class="step" hidden data-title="Goals and audience"
+                   data-sub="Purpose, customers, contact form"
+                   data-desc="Tell us what the website should achieve and who it&rsquo;s for.">
+            <p class="legend"><span class="rq" aria-hidden="true">*</span> Required. Questions marked Optional can be skipped.</p>
+
+            <fieldset class="field" id="w-goal">
+              <legend class="lbl">What is the main goal of your website? <span class="rq" aria-hidden="true">*</span></legend>
+              <p class="hint">Choose the one that matters most.</p>
+              <div class="choices">
+                <label class="choice radio"><input type="radio" name="goal" value="Generate leads and inquiries"><span class="mark"></span><span class="ct">Generate leads and inquiries</span></label>
+                <label class="choice radio"><input type="radio" name="goal" value="Showcase services and portfolio"><span class="mark"></span><span class="ct">Showcase services and portfolio</span></label>
+                <label class="choice radio"><input type="radio" name="goal" value="Build brand credibility and trust"><span class="mark"></span><span class="ct">Build brand credibility and trust</span></label>
+                <label class="choice radio"><input type="radio" name="goal" value="Other"><span class="mark"></span><span class="ct">Other</span></label>
+              </div>
+              <div class="reveal" data-when="goal:Other"><div class="inner"><div class="sub">
+                <label class="mini" for="goalOther">Describe your goal</label>
+                <input type="text" id="goalOther" placeholder="What should your website do for your business?">
+              </div></div></div>
+              <p class="err" role="alert"></p>
+            </fieldset>
+
+            <fieldset class="field" id="w-audience">
+              <legend class="lbl">Who are your ideal customers? <span class="rq" aria-hidden="true">*</span></legend>
+              <p class="hint">Select every group that applies.</p>
+              <div class="choices two">
+                <label class="choice"><input type="checkbox" name="audience" value="Individuals / General Public"><span class="mark"></span><span class="ct">Individuals / General Public</span></label>
+                <label class="choice"><input type="checkbox" name="audience" value="Homeowners"><span class="mark"></span><span class="ct">Homeowners</span></label>
+                <label class="choice"><input type="checkbox" name="audience" value="Businesses / Corporate Clients"><span class="mark"></span><span class="ct">Businesses / Corporate Clients</span></label>
+                <label class="choice"><input type="checkbox" name="audience" value="High-Income / Luxury Clients"><span class="mark"></span><span class="ct">High-Income / Luxury Clients</span></label>
+                <label class="choice"><input type="checkbox" name="audience" value="Other"><span class="mark"></span><span class="ct">Other</span></label>
+              </div>
+              <div class="reveal" data-when="audience:Other"><div class="inner"><div class="sub">
+                <label class="mini" for="audienceOther">Describe your target audience</label>
+                <input type="text" id="audienceOther" placeholder="Who else do you want to reach?">
+              </div></div></div>
+              <p class="err" role="alert"></p>
+            </fieldset>
+
+            <div class="field" id="w-contactForm">
+              <label class="lbl" for="contactForm">Contact form fields <span class="opt">Optional</span></label>
+              <p class="hint">Which fields should visitors fill in on your website&rsquo;s contact form?</p>
+              <textarea id="contactForm" class="md" placeholder="For example: Name, email, phone number, service needed, message&hellip;"></textarea>
+              <p class="err" role="alert"></p>
+            </div>
+          </section>
+
+          <!-- ========== STEP 5 — Look & feel ========== -->
+          <section class="step" hidden data-title="Look and feel"
+                   data-sub="Colors, buttons, extras"
+                   data-desc="Share your visual preferences, or hand the decisions to our design team.">
+            <p class="legend"><span class="rq" aria-hidden="true">*</span> Required. Questions marked Optional can be skipped.</p>
+
+            <fieldset class="field" id="w-palette">
+              <legend class="lbl">Do you have a preferred color palette? <span class="rq" aria-hidden="true">*</span></legend>
+              <div class="choices two">
+                <label class="choice radio"><input type="radio" name="paletteMode" value="describe"><span class="mark"></span><span class="ct">I&rsquo;ll describe my colors</span></label>
+                <label class="choice radio"><input type="radio" name="paletteMode" value="fovel"><span class="mark"></span><span class="ct">Leave it entirely to FOVEL</span></label>
+              </div>
+              <div class="reveal" data-when="paletteMode:describe"><div class="inner"><div class="sub">
+                <label class="mini" for="palette">Your preferred colors</label>
+                <textarea id="palette" placeholder="For example: deep navy and white with gold accents, or the colors from my logo&hellip;"></textarea>
+              </div></div></div>
+              <p class="err" role="alert"></p>
+            </fieldset>
+
+            <fieldset class="field" id="w-button">
+              <legend class="lbl">Main button color <span class="rq" aria-hidden="true">*</span></legend>
+              <p class="hint">The color for the main buttons throughout your website.</p>
+              <div class="choices two">
+                <label class="choice radio"><input type="radio" name="buttonMode" value="choose"><span class="mark"></span><span class="ct">I&rsquo;ll choose a color</span></label>
+                <label class="choice radio"><input type="radio" name="buttonMode" value="fovel"><span class="mark"></span><span class="ct">Leave it entirely to FOVEL</span></label>
+              </div>
+              <div class="reveal" data-when="buttonMode:choose"><div class="inner"><div class="sub">
+                <label class="mini" id="swLabel">Pick a color or describe your own</label>
+                <div class="swatches" id="swatches" role="group" aria-labelledby="swLabel"></div>
+                <input type="text" id="button" placeholder="Type a color name or code, for example Royal blue or #1D4ED8" aria-label="Main button color">
+              </div></div></div>
+              <p class="err" role="alert"></p>
+            </fieldset>
+
+            <div class="field" id="w-design">
+              <label class="lbl" for="design">Design process <span class="opt">Optional</span></label>
+              <p class="hint">Describe how you&rsquo;d like the design process to work and any specific design requirements.</p>
+              <textarea id="design" class="md" placeholder="For example: I&rsquo;d like to review the homepage first, then approve the rest&hellip;"></textarea>
+              <p class="err" role="alert"></p>
+            </div>
+
+            <div class="field" id="w-additional">
+              <label class="lbl" for="additional">Additional requirements <span class="opt">Optional</span></label>
+              <p class="hint">Is there anything else you&rsquo;d like us to know about your website or business? Share any additional requirements, ideas, or instructions here.</p>
+              <textarea id="additional" class="lg" placeholder="Anything else we should know&hellip;"></textarea>
+              <p class="err" role="alert"></p>
+            </div>
+          </section>
+
+          <!-- ========== STEP 6 — Review ========== -->
+          <section class="step" hidden data-title="Review and send"
+                   data-sub="Check, then open WhatsApp"
+                   data-desc="Check your answers below. Use Edit to change anything before you continue.">
+            <div class="alert" id="reviewAlert" role="alert" hidden></div>
+            <div id="reviewList"></div>
+
+            <div class="meter" id="meter">
+              <div class="meter-top"><strong id="meterTitle">Message size</strong><span id="meterText"></span></div>
+              <div class="pbar" aria-hidden="true"><i></i></div>
+            </div>
+            <details class="preview">
+              <summary>Preview the WhatsApp message</summary>
+              <pre id="msgPreview"></pre>
+            </details>
+
+            <div class="notice" id="notice">
+              <div class="ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/><path d="M9 10c.4 2 2.1 3.800 4.200 4.400l1.300-1.100-1.600-1-.9.700c-.8-.4-1.500-1.100-1.900-1.900l.7-.9-1-1.600L9 10Z" fill="currentColor" stroke="none"/></svg>
+              </div>
+              <p>Once you complete this form, you will be redirected to WhatsApp with your answers in a prefilled message. Simply review the message and press Send to submit your information to FOVEL.</p>
+            </div>
+
+            <div id="sendPanel" aria-live="polite"></div>
+          </section>
+
+        </div><!-- /card-body -->
+
+        <div class="nav">
+          <button type="button" class="btn ghost back" id="backBtn" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>
+            Back
+          </button>
+          <button type="button" class="btn primary" id="nextBtn">Continue</button>
+        </div>
+      </div>
+    </form>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ==========================================================================
+   CONFIG — edit these to change behaviour
+   ========================================================================== */
+const CONFIG = {
+  // FOVEL WhatsApp destination: +92 3150531081, international format, digits only
+  waNumber: '923150531081',
+  // Longest message we will pass inside a single wa.me link.
+  // Both limits must hold: raw characters, and the URL-encoded length of the text.
+  maxChars: 3800,
+  maxEncoded: 5000,
+  storageKey: 'fovel_onboarding_draft_v1'
+};
+
+const SOCIALS = [
+  { id:'soc_facebook',  label:'Facebook',  ph:'facebook.com/yourbusiness' },
+  { id:'soc_instagram', label:'Instagram', ph:'instagram.com/yourbusiness' },
+  { id:'soc_linkedin',  label:'LinkedIn',  ph:'linkedin.com/company/yourbusiness' },
+  { id:'soc_x',         label:'X (Twitter)', ph:'x.com/yourbusiness' },
+  { id:'soc_tiktok',    label:'TikTok',    ph:'tiktok.com/@yourbusiness' },
+  { id:'soc_youtube',   label:'YouTube',   ph:'youtube.com/@yourbusiness' },
+  { id:'soc_other',     label:'Other link', ph:'Any other profile or page', wide:true }
+];
+
+const SWATCHES = [
+  ['Forest green','#1F5C4A'],['Navy','#1E3A6D'],['Royal blue','#2557D6'],['Teal','#0F8B8D'],
+  ['Burgundy','#7A1F3D'],['Charcoal','#2B2F36'],['Gold','#B8893A'],['Coral','#E2574C'],['Violet','#6D3FC4']
+];
+
+/* ==========================================================================
+   HELPERS
+   ========================================================================== */
+const $  = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const val = id => (($('#'+id)||{}).value || '').trim().replace(/\r\n/g,'\n');
+const checkedVals = name => $$(`input[name="${name}"]:checked`).map(e => e.value);
+const radioVal = name => (($(`input[name="${name}"]:checked`)||{}).value) || '';
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const TM_YES = 'Yes, I have customer testimonials or reviews.';
+const reURL   = /^(https?:\/\/)?([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}(:\d+)?([\/?#]\S*)?$/i;
+const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+function phoneErr(v){
+  if (!/^[+()\d\s.\-]+$/.test(v)) return 'Use numbers only. You may include +, spaces and dashes.';
+  const n = v.replace(/\D/g,'').length;
+  if (n < 7 || n > 15) return 'Enter the full number with country code, for example +1 555 010 1234.';
+  return null;
+}
+
+/* ==========================================================================
+   DATA
+   ========================================================================== */
+function getData(){
+  const d = {
+    owner:val('owner'), business:val('business'), url:val('url'), services:val('services'),
+    address:val('address'), phone:val('phone'), email:val('email'), whatsapp:val('whatsapp'),
+    pages:checkedVals('pages'), about:val('about'), testimonials:radioVal('testimonials'), tm:getTm(), imagePerm:radioVal('imagePerm'),
+    goal:radioVal('goal'), goalOther:val('goalOther'),
+    audience:checkedVals('audience'), audienceOther:val('audienceOther'), contactForm:val('contactForm'),
+    paletteMode:radioVal('paletteMode'), palette:val('palette'),
+    buttonMode:radioVal('buttonMode'), button:val('button'),
+    design:val('design'), additional:val('additional'), social:{}
+  };
+  SOCIALS.forEach(s => d.social[s.id] = val(s.id));
+  return d;
+}
+
+/* ==========================================================================
+   VALIDATION RULES  (one rule per question; step is derived from the DOM)
+   ========================================================================== */
+const RULES = [
+  { key:'owner', wrap:'w-owner', req:1, label:'Business owner’s name',
+    test:d => d.owner.length < 2 ? 'Enter the business owner’s full name.' : null },
+  { key:'business', wrap:'w-business', req:1, label:'Business name',
+    test:d => d.business.length < 2 ? 'Enter the official business name.' : null },
+  { key:'url', wrap:'w-url', label:'Current website',
+    test:d => d.url && !reURL.test(d.url) ? 'Enter a valid web address, for example www.yourbusiness.com.' : null },
+  { key:'services', wrap:'w-services', req:1, label:'Services offered',
+    test:d => d.services.length < 10 ? 'Describe your services. A few words per service is enough (at least 10 characters).' : null },
+  { key:'address', wrap:'w-address', req:1, label:'Business address',
+    test:d => d.address.length < 6 ? 'Enter the complete business address.' : null },
+  { key:'phone', wrap:'w-phone', req:1, label:'Business phone number',
+    test:d => !d.phone ? 'Enter the business phone number.' : phoneErr(d.phone) },
+  { key:'email', wrap:'w-email', req:1, label:'Business email address',
+    test:d => !d.email ? 'Enter the business email address.' : (reEmail.test(d.email) ? null : 'Enter a valid email address, for example hello@yourbusiness.com.') },
+  { key:'whatsapp', wrap:'w-whatsapp', label:'Business WhatsApp number',
+    test:d => d.whatsapp ? phoneErr(d.whatsapp) : null },
+  { key:'pages', wrap:'w-pages', req:1, label:'Website pages',
+    test:d => d.pages.length ? null : 'Select at least one page.' },
+  { key:'testimonials', wrap:'w-testimonials', req:1, label:'Testimonials and reviews',
+    test:d => {
+      if (!d.testimonials) return 'Choose one option.';
+      if (d.testimonials === TM_YES){
+        if (d.tm.some(e => !(e.name && e.review))) return 'Add both a customer name and a review for each testimonial, or remove the extra box.';
+        if (!d.tm.length) return 'Add at least one customer name and review.';
+      }
+      return null;
+    } },
+  { key:'imagePerm', wrap:'w-imagePerm', req:1, label:'Permission to use images of your work',
+    test:d => d.imagePerm ? null : 'Choose Yes or No.' },
+  { key:'goal', wrap:'w-goal', req:1, label:'Main website goal',
+    test:d => !d.goal ? 'Choose your main goal.' : (d.goal === 'Other' && d.goalOther.length < 3 ? 'Describe your goal in the text field.' : null) },
+  { key:'audience', wrap:'w-audience', req:1, label:'Target audience',
+    test:d => !d.audience.length ? 'Select at least one audience.' :
+      (d.audience.includes('Other') && d.audienceOther.length < 3 ? 'Describe your target audience in the text field.' : null) },
+  { key:'palette', wrap:'w-palette', req:1, label:'Preferred color palette',
+    test:d => !d.paletteMode ? 'Choose one option.' :
+      (d.paletteMode === 'describe' && d.palette.length < 2 ? 'Describe your preferred colors, or leave it to FOVEL.' : null) },
+  { key:'button', wrap:'w-button', req:1, label:'Main button color',
+    test:d => !d.buttonMode ? 'Choose one option.' :
+      (d.buttonMode === 'choose' && d.button.length < 2 ? 'Pick or describe a color, or leave it to FOVEL.' : null) }
+];
+SOCIALS.forEach(s => RULES.push({
+  key:s.id, wrap:'w-'+s.id, label:s.label+' link',
+  test:d => d.social[s.id] && !reURL.test(d.social[s.id]) ? `Enter a valid link, for example ${s.ph.indexOf('.')>0 ? s.ph : 'instagram.com/yourbusiness'}.` : null
+}));
+
+/* ==========================================================================
+   STATE
+   ========================================================================== */
+let steps, cur = 0, maxReached = 0, returnToReview = false, LAST = 0;
+let storageOK = true, dirty = false, saveTimer = null, lastMessage = '';
+
+/* ==========================================================================
+   TESTIMONIAL ENTRIES (unlimited name + review boxes)
+   ========================================================================== */
+let tmCounter = 0;
+function getTm(){
+  return $$('#tmList .tm-row').map(r => ({
+    name: $('.tm-name', r).value.trim(),
+    review: $('textarea', r).value.trim().replace(/\r\n/g,'\n')
+  })).filter(e => e.name || e.review);
+}
+function addTm(entry, focus){
+  const n = ++tmCounter, row = document.createElement('div');
+  row.className = 'tm-row';
+  row.innerHTML = `
+    <div class="tm-head"><span class="tm-n"></span><button type="button" class="link-btn tm-remove">Remove</button></div>
+    <label class="mini" for="tmn_${n}">Customer name</label>
+    <input type="text" class="tm-name" id="tmn_${n}" data-nosave autocomplete="off" placeholder="For example: Sarah Johnson">
+    <label class="mini" for="tmr_${n}">Their review</label>
+    <textarea id="tmr_${n}" data-nosave placeholder="Paste or type what this customer said about you&hellip;"></textarea>`;
+  $('.tm-name', row).value = (entry && entry.name) || '';
+  $('textarea', row).value = (entry && entry.review) || '';
+  $('#tmList').appendChild(row);
+  renumberTm();
+  if (focus) $('.tm-name', row).focus({preventScroll:false});
+}
+function renumberTm(){
+  const rows = $$('#tmList .tm-row');
+  rows.forEach((r,i) => {
+    $('.tm-n', r).textContent = 'Testimonial ' + (i + 1);
+    $('.tm-remove', r).hidden = rows.length === 1;
+  });
+}
+function buildTm(list){
+  $('#tmList').textContent = '';
+  (list && list.length ? list : [null]).forEach(e => addTm(e, false));
+}
+function markTmBad(on){
+  const rows = $$('#tmList .tm-row');
+  const full = rows.filter(r => $('.tm-name', r).value.trim() && $('textarea', r).value.trim());
+  rows.forEach((r,i) => {
+    const a = !!$('.tm-name', r).value.trim(), b = !!$('textarea', r).value.trim();
+    const partial = (a || b) && !(a && b);
+    r.classList.toggle('bad', on && (partial || (!full.length && i === 0)));
+  });
+}
+
+/* ==========================================================================
+   BUILD DYNAMIC PARTS
+   ========================================================================== */
+function buildSocial(){
+  $('#socialGrid').innerHTML = SOCIALS.map(s => `
+    <div class="field${s.wide?' wide':''}" id="w-${s.id}">
+      <label for="${s.id}">${s.label}</label>
+      <input type="text" id="${s.id}" inputmode="url" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" placeholder="${s.ph}">
+      <p class="err" role="alert"></p>
+    </div>`).join('');
+}
+function buildSwatches(){
+  const box = $('#swatches');
+  SWATCHES.forEach(([name,hex]) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'sw'; b.style.background = hex;
+    b.setAttribute('aria-label', name + ' ' + hex); b.title = name; b.dataset.value = `${name} (${hex})`;
+    b.addEventListener('click', () => { $('#button').value = b.dataset.value; afterChange($('#button')); markSwatch(); });
+    box.appendChild(b);
+  });
+  const pick = document.createElement('label');
+  pick.className = 'sw pick'; pick.title = 'Choose any color';
+  pick.innerHTML = '<span class="sr">Choose a custom color</span><input type="color" value="#1F5C4A" data-nosave>';
+  pick.querySelector('input').addEventListener('input', e => {
+    $('#button').value = `Custom (${e.target.value.toUpperCase()})`; afterChange($('#button')); markSwatch();
+  });
+  box.appendChild(pick);
+}
+function markSwatch(){
+  const v = $('#button').value.trim();
+  $$('#swatches .sw[data-value]').forEach(b => b.classList.toggle('on', b.dataset.value === v));
+}
+function buildStepList(){
+  const check = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>';
+  $('#stepList').innerHTML = steps.map((s,i) => `
+    <li data-i="${i}"><button type="button" class="si" data-i="${i}">
+      <span class="dot"><span>${i+1}</span>${check}</span>
+      <span><span class="t" style="display:block">${s.dataset.title}</span><span class="s" style="display:block">${s.dataset.sub}</span></span>
+    </button></li>`).join('');
+  $$('.si').forEach(b => b.addEventListener('click', () => {
+    const i = +b.dataset.i;
+    if (i === cur) return;
+    if (i <= maxReached) goTo(i);
+    else toast('Finish this step and press Continue to unlock the next one.');
+  }));
+}
+
+/* ==========================================================================
+   ERRORS
+   ========================================================================== */
+function setError(rule, msg){
+  const wrap = $('#'+rule.wrap); if (!wrap) return;
+  wrap.classList.toggle('invalid', !!msg);
+  const e = $('.err', wrap); if (e) e.textContent = msg || '';
+  $$('input,textarea', wrap).forEach(el => {
+    if (msg) el.setAttribute('aria-invalid','true'); else el.removeAttribute('aria-invalid');
+  });
+  if (rule.key === 'testimonials') markTmBad(!!msg);
+}
+function validateStep(i, show){
+  const d = getData(), bad = [];
+  RULES.forEach(r => {
+    if (r.step !== i) return;
+    const m = r.test(d);
+    if (m) bad.push(r);
+    if (show) setError(r, m);
+  });
+  return bad;
+}
+function focusRule(r){
+  const wrap = $('#'+r.wrap); if (!wrap) return;
+  wrap.scrollIntoView({behavior:reduceMotion?'auto':'smooth', block:'center'});
+  wrap.classList.remove('shake'); void wrap.offsetWidth; wrap.classList.add('shake');
+  const el = $('input:not([type=color]),textarea', wrap);
+  if (el) setTimeout(()=> el.focus({preventScroll:true}), 250);
+}
+
+/* ==========================================================================
+   PROGRESS
+   ========================================================================== */
+function stepDone(i){ const d = getData(); return RULES.every(r => r.step !== i || !r.test(d)); }
+function updateProgress(){
+  const d = getData(), req = RULES.filter(r => r.req);
+  const done = req.filter(r => !r.test(d)).length;
+  const pct = Math.round(done / req.length * 100);
+  document.documentElement.style.setProperty('--p', pct + '%');
+  $$('[data-pct]').forEach(e => e.textContent = pct + '%');
+  $$('[data-pbar]').forEach(e => e.setAttribute('aria-valuenow', pct));
+  $$('#stepList li').forEach((li,i) => {
+    li.classList.toggle('current', i === cur);
+    li.classList.toggle('done', i !== cur && i <= maxReached && i < LAST && stepDone(i));
+    li.classList.toggle('locked', i > maxReached);
+    const b = $('.si', li);
+    if (i === cur) b.setAttribute('aria-current','step'); else b.removeAttribute('aria-current');
+  });
+}
+
+/* ==========================================================================
+   REVEALS (conditional text fields)
+   ========================================================================== */
+function syncReveals(){
+  $$('.reveal').forEach(r => {
+    const [name, value] = r.dataset.when.split(':');
+    const on = !!$(`input[name="${name}"][value="${value}"]:checked`);
+    r.classList.toggle('open', on);
+    $$('input,textarea,button', r).forEach(el => { el.tabIndex = on ? 0 : -1; });
+  });
+}
+
+/* ==========================================================================
+   NAVIGATION
+   ========================================================================== */
+function goTo(i, opts={}){
+  const { push = true, initial = false } = opts;
+  const dir = i >= cur ? 'in-fwd' : 'in-back';
+  steps.forEach((s,k) => { s.hidden = k !== i; s.classList.remove('in-fwd','in-back'); });
+  if (!initial && !reduceMotion) steps[i].classList.add(dir);
+  cur = i;
+  if (cur === LAST) { returnToReview = false; renderReview(); }
+  document.body.dataset.step = i;
+  $('#stepTitle').textContent = steps[i].dataset.title;
+  $('#stepDesc').textContent  = steps[i].dataset.desc;
+  $$('[data-cur]').forEach(e => e.textContent = i + 1);
+  $$('[data-total]').forEach(e => e.textContent = steps.length);
+  $('#backBtn').hidden = i === 0;
+  const nb = $('#nextBtn');
+  if (i === LAST) nb.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.500a8.400 8.400 0 0 1-12.400 7.400L3 20.500l1.700-5.400A8.400 8.400 0 1 1 21 11.500Z"/></svg>Open WhatsApp with my answers';
+  else if (returnToReview) nb.textContent = 'Back to review';
+  else if (i === LAST - 1) nb.textContent = 'Review my answers';
+  else nb.textContent = 'Continue';
+  updateProgress();
+  if (!initial){
+    window.scrollTo({top:0, behavior: reduceMotion ? 'auto' : 'smooth'});
+    setTimeout(() => $('#stepTitle').focus({preventScroll:true}), 60);
+    if (push) { try { history.pushState({step:i}, '', '#step-' + (i+1)); } catch(e){} }
+    scheduleSave();
+  }
+}
+function next(){
+  if (cur === LAST) return submit();
+  const bad = validateStep(cur, true);
+  if (bad.length) { focusRule(bad[0]); return; }
+  if (returnToReview){ maxReached = LAST; goTo(LAST); return; }
+  maxReached = Math.max(maxReached, cur + 1);
+  goTo(cur + 1);
+}
+function back(){ if (cur > 0) goTo(cur - 1); }
+function editStep(i){ returnToReview = true; goTo(i); }
+
+/* ==========================================================================
+   REVIEW + MESSAGE MODEL (single source for review screen and WhatsApp text)
+   ========================================================================== */
+function socialLines(d){
+  return SOCIALS.filter(s => d.social[s.id]).map(s => `${s.label}: ${d.social[s.id]}`);
+}
+function tmValue(d){
+  if (d.testimonials !== TM_YES || !d.tm.length) return d.testimonials;
+  return 'Yes\n' + d.tm.map((e,i) => `${i+1}. ${e.name || '-'}: ${e.review || '-'}`).join('\n');
+}
+function model(d){
+  const palette = d.paletteMode === 'fovel' ? 'Leave it entirely to FOVEL' : d.palette;
+  const button  = d.buttonMode  === 'fovel' ? 'Leave it entirely to FOVEL' : d.button;
+  const goal = d.goal === 'Other' ? `Other: ${d.goalOther}` : d.goal;
+  const audience = d.audience.map(a => a === 'Other' ? `Other: ${d.audienceOther}` : a).join(', ');
+  return [
+    { title:'BUSINESS INFORMATION', rows:[
+      { label:'Business Owner',  step:0, value:d.owner },
+      { label:'Business Name',   step:0, value:d.business },
+      { label:'Current Website', step:0, value:d.url },
+      { label:'Services',        step:0, value:d.services },
+      { label:'Address',         step:0, value:d.address },
+      { label:'Business Phone',  step:1, value:d.phone },
+      { label:'Business Email',  step:1, value:d.email },
+      { label:'Social Media Links', step:1, value:socialLines(d).join('\n') }
+    ]},
+    { title:'WEBSITE REQUIREMENTS', rows:[
+      { label:'Selected Pages',  step:2, value:d.pages.join(', ') },
+      { label:'About the Business', step:2, value:d.about },
+      { label:'Business WhatsApp',  step:1, value:d.whatsapp },
+      { label:'Preferred Color Palette', step:4, value:palette },
+      { label:'Main Website Goal', step:3, value:goal },
+      { label:'Contact Form Requirements', step:3, value:d.contactForm },
+      { label:'Main Button Color', step:4, value:button },
+      { label:'Design Process',  step:4, value:d.design },
+      { label:'Target Audience', step:3, value:audience },
+      { label:'Customer Testimonials / Reviews', step:2, value:tmValue(d) },
+      { label:'Permission to Use Work Images (Social Media / Google Maps)', step:2, value:d.imagePerm }
+    ]},
+    { title:'ADDITIONAL REQUIREMENTS', rows:[
+      { label:'Other Instructions', step:4, value:d.additional }
+    ]}
+  ];
+}
+function tidy(t){
+  // removes only invisible padding: trailing spaces, repeated spaces, extra blank lines
+  return (t || '').replace(/[ \t]+\n/g,'\n').replace(/[ \t]{2,}/g,' ').replace(/\n{3,}/g,'\n\n').trim();
+}
+function buildMessage(d){
+  const out = ['*FOVEL — CLIENT ONBOARDING FORM*'];
+  model(d).forEach(g => {
+    out.push('', '*' + g.title + '*');
+    g.rows.forEach(r => {
+      const text = tidy(r.value);
+      if (!text) out.push(`${r.label}: -`);
+      else if (text.indexOf('\n') > -1) out.push(`${r.label}:`, text);
+      else out.push(`${r.label}: ${text}`);
+    });
+  });
+  return out.join('\n').trim();
+}
+function sizeStats(msg){
+  const chars = msg.length, encoded = encodeURIComponent(msg).length;
+  const ratio = Math.max(chars / CONFIG.maxChars, encoded / CONFIG.maxEncoded);
+  return { chars, encoded, ratio, over: ratio > 1, warn: ratio > .8 };
+}
+function renderReview(){
+  const d = getData(), m = model(d);
+  const list = $('#reviewList'); list.textContent = '';
+  m.forEach(g => {
+    const wrap = document.createElement('section'); wrap.className = 'rv-group';
+    const h = document.createElement('h3'); h.textContent = g.title.charAt(0) + g.title.slice(1).toLowerCase();
+    wrap.appendChild(h);
+    g.rows.forEach(r => {
+      const row = document.createElement('div'); row.className = 'rv-row';
+      const k = document.createElement('div'); k.className = 'rv-k'; k.textContent = r.label;
+      const v = document.createElement('div'); v.className = 'rv-v';
+      const t = (r.value || '').trim();
+      if (t) v.textContent = t; else { v.textContent = 'Not provided'; v.classList.add('none'); }
+      const e = document.createElement('button'); e.type = 'button'; e.className = 'rv-edit'; e.textContent = 'Edit';
+      e.setAttribute('aria-label', 'Edit ' + r.label);
+      e.addEventListener('click', () => editStep(r.step));
+      row.append(k, v, e); wrap.appendChild(row);
+    });
+    list.appendChild(wrap);
+  });
+
+  // outstanding problems
+  const bad = RULES.filter(r => r.test(d));
+  const alert = $('#reviewAlert');
+  if (bad.length){
+    alert.hidden = false; alert.textContent = '';
+    const s = document.createElement('strong'); s.textContent = bad.length === 1 ? 'One answer needs attention' : bad.length + ' answers need attention';
+    const ul = document.createElement('ul');
+    bad.forEach(r => {
+      const li = document.createElement('li'), b = document.createElement('button');
+      b.type = 'button'; b.textContent = r.label; b.addEventListener('click', () => { editStep(r.step); setTimeout(()=>{ validateStep(r.step,true); focusRule(r); }, 300); });
+      li.appendChild(b); ul.appendChild(li);
+    });
+    alert.append(s, ul);
+  } else alert.hidden = true;
+
+  // message preview + size meter
+  lastMessage = buildMessage(d);
+  $('#msgPreview').textContent = lastMessage;
+  const st = sizeStats(lastMessage), mt = $('#meter');
+  mt.classList.toggle('warn', st.warn && !st.over); mt.classList.toggle('over', st.over);
+  mt.style.setProperty('--m', Math.min(100, Math.round(st.ratio * 100)) + '%');
+  $('#meterText').textContent = st.over
+    ? `${st.chars.toLocaleString()} characters. Too long for one WhatsApp link.`
+    : st.warn ? `${st.chars.toLocaleString()} characters. Close to the limit for one link.`
+              : `${st.chars.toLocaleString()} characters. Fits in one WhatsApp link.`;
+  $('#sendPanel').innerHTML = '';
+}
+
+/* ==========================================================================
+   WHATSAPP SUBMISSION
+   ========================================================================== */
+function waURL(text){
+  return 'https://wa.me/' + CONFIG.waNumber + (text ? '?text=' + encodeURIComponent(text) : '');
+}
+function openWA(url){
+  const w = window.open(url, '_blank');
+  if (w) { try { w.opener = null; } catch(e){} }
+  else { dirty = false; window.location.href = url; }   // popup blocked: navigate this tab (draft is saved)
+}
+async function copyText(text){
+  try { await navigator.clipboard.writeText(text); return true; } catch(e){}
+  try {
+    const ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly','');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0'; document.body.appendChild(ta);
+    ta.select(); ta.setSelectionRange(0, text.length);
+    const ok = document.execCommand('copy'); ta.remove(); return ok;
+  } catch(e){ return false; }
+}
+function submit(){
+  const d = getData();
+  const bad = RULES.filter(r => r.test(d));
+  if (bad.length){
+    const first = bad[0];
+    returnToReview = true; goTo(first.step);
+    validateStep(first.step, true); focusRule(bad.filter(r => r.step === first.step)[0]);
+    toast('Please complete the highlighted answers first.');
+    return;
+  }
+  const msg = buildMessage(d), st = sizeStats(msg), panel = $('#sendPanel');
+  lastMessage = msg;
+
+  if (!st.over){
+    panel.innerHTML = `
+      <div class="panel info">
+        <h4>WhatsApp is opening with your message</h4>
+        <p>Nothing has been sent yet. Review the message in WhatsApp and press Send to submit your information to FOVEL.</p>
+        <div class="btns">
+          <button type="button" class="btn ghost" id="reopen">Open WhatsApp again</button>
+          <button type="button" class="btn ghost" id="copyMsg">Copy message</button>
+        </div>
+      </div>`;
+    $('#reopen').addEventListener('click', () => openWA(waURL(msg)));
+    $('#copyMsg').addEventListener('click', doCopy);
+    openWA(waURL(msg));
+  } else {
+    panel.innerHTML = `
+      <div class="panel long">
+        <h4>Your answers are too long for one WhatsApp link</h4>
+        <p>Your message is ${st.chars.toLocaleString()} characters, which is more than a prefilled link can carry reliably. Nothing has been cut. Copy the full message, open the WhatsApp chat with FOVEL, paste it in, and press Send. You can also go back and shorten your longest answers.</p>
+        <div class="btns">
+          <button type="button" class="btn gold" id="copyMsg">Copy full message</button>
+          <button type="button" class="btn ghost" id="openChat">Open WhatsApp chat</button>
+        </div>
+      </div>`;
+    $('#copyMsg').addEventListener('click', doCopy);
+    $('#openChat').addEventListener('click', () => openWA(waURL('')));
+  }
+  panel.scrollIntoView({behavior:reduceMotion?'auto':'smooth', block:'center'});
+}
+async function doCopy(){
+  const ok = await copyText(lastMessage);
+  toast(ok ? 'Copied. Paste it into the WhatsApp chat and press Send.' : 'Copy failed. Open “Preview the WhatsApp message” and copy the text manually.');
+}
+
+/* ==========================================================================
+   PERSISTENCE (drafts survive reloads and accidental closes)
+   ========================================================================== */
+function serialize(){
+  const o = { t:{}, c:{}, tm:getTm(), step:cur, max:maxReached, returnToReview };
+  $$('#form input, #form textarea').forEach(el => {
+    if (el.hasAttribute('data-nosave')) return;
+    if (el.type === 'radio' || el.type === 'checkbox') o.c[el.name + '::' + el.value] = el.checked;
+    else if (el.id) o.t[el.id] = el.value;
+  });
+  return o;
+}
+function hasData(o){ return (o.tm && o.tm.length > 0) || Object.values(o.t).some(v => v.trim()) || Object.values(o.c).some(Boolean); }
+function save(){
+  try {
+    localStorage.setItem(CONFIG.storageKey, JSON.stringify(serialize()));
+    $('#saveText').textContent = 'Draft saved on this device.';
+  } catch(e){
+    storageOK = false;
+    $('#saveText').textContent = 'This browser can’t save drafts. Keep this page open.';
+  }
+}
+function scheduleSave(){ clearTimeout(saveTimer); saveTimer = setTimeout(save, 250); }
+function restore(){
+  let raw; try { raw = localStorage.getItem(CONFIG.storageKey); } catch(e){ storageOK = false; return false; }
+  if (!raw) return false;
+  try {
+    const o = JSON.parse(raw); if (!hasData(o)) return false;
+    $$('#form input, #form textarea').forEach(el => {
+      if (el.hasAttribute('data-nosave')) return;
+      if (el.type === 'radio' || el.type === 'checkbox'){ const k = el.name + '::' + el.value; if (k in o.c) el.checked = !!o.c[k]; }
+      else if (el.id && el.id in o.t) el.value = o.t[el.id];
+    });
+    if (Array.isArray(o.tm)) buildTm(o.tm);
+    maxReached = Math.min(Math.max(+o.max || 0, 0), LAST);
+    cur = Math.min(Math.max(+o.step || 0, 0), maxReached);
+    return true;
+  } catch(e){ return false; }
+}
+
+/* ==========================================================================
+   EVENTS
+   ========================================================================== */
+function afterChange(el){
+  dirty = true;
+  const wrap = el && el.closest('.field');
+  if (wrap && wrap.classList.contains('invalid')){
+    const r = RULES.find(x => x.wrap === wrap.id);
+    if (r) setError(r, r.test(getData()));
+  }
+  syncReveals(); updateProgress(); scheduleSave();
+}
+function bind(){
+  const form = $('#form');
+  form.addEventListener('submit', e => e.preventDefault());
+  form.addEventListener('input',  e => { afterChange(e.target); if (e.target.id === 'button') markSwatch(); });
+  form.addEventListener('change', e => afterChange(e.target));
+  // validate a single field on blur, only if the person typed something
+  form.addEventListener('focusout', e => {
+    const t = e.target; if (!t.matches('input[type=text],input[type=tel],input[type=email],textarea')) return;
+    const wrap = t.closest('.field'); if (!wrap) return;
+    const r = RULES.find(x => x.wrap === wrap.id); if (!r || !t.value.trim()) return;
+    if (['goal','audience','palette','button','testimonials'].includes(r.key)) return;
+    setError(r, r.test(getData()));
+  });
+  // Enter on a single-line input moves forward instead of submitting
+  form.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.target.matches('input[type=text],input[type=tel],input[type=email]')){ e.preventDefault(); next(); }
+  });
+  $('#tmAdd').addEventListener('click', () => { addTm(null, true); afterChange($('#tmAdd')); });
+  $('#tmList').addEventListener('click', e => {
+    const b = e.target.closest('.tm-remove'); if (!b) return;
+    const rows = $$('#tmList .tm-row'), row = b.closest('.tm-row');
+    if (rows.length === 1){ $('.tm-name', row).value = ''; $('textarea', row).value = ''; }
+    else row.remove();
+    renumberTm(); afterChange($('#tmAdd'));
+  });
+  $('#nextBtn').addEventListener('click', next);
+  $('#backBtn').addEventListener('click', back);
+  $('#togglePages').addEventListener('click', () => {
+    const boxes = $$('input[name="pages"]'), all = boxes.every(b => b.checked);
+    boxes.forEach(b => b.checked = !all); afterChange(boxes[0]);
+  });
+  $('#startOver').addEventListener('click', () => {
+    if (!confirm('Clear all your answers and start again?')) return;
+    $$('#form input, #form textarea').forEach(el => {
+      if (el.type === 'radio' || el.type === 'checkbox') el.checked = false; else if (!el.hasAttribute('data-nosave')) el.value = '';
+    });
+    buildTm([]);
+    RULES.forEach(r => setError(r, null));
+    try { localStorage.removeItem(CONFIG.storageKey); } catch(e){}
+    maxReached = 0; returnToReview = false; dirty = false; markSwatch(); syncReveals();
+    $('#saveText').textContent = 'Answers save on this device as you go.';
+    goTo(0);
+  });
+  window.addEventListener('popstate', e => {
+    const s = e.state && typeof e.state.step === 'number' ? e.state.step : 0;
+    goTo(Math.min(s, maxReached), { push:false });
+  });
+  window.addEventListener('beforeunload', e => {
+    if (dirty && !storageOK){ e.preventDefault(); e.returnValue = ''; }
+  });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
+}
+
+/* toast */
+let toastTimer;
+function toast(text){
+  const t = $('#toast'); t.textContent = text; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 4200);
+}
+
+/* ==========================================================================
+   INIT
+   ========================================================================== */
+(function init(){
+  buildSocial(); buildSwatches(); buildTm([]);
+  steps = $$('.step'); LAST = steps.length - 1;
+  RULES.forEach(r => { const w = $('#'+r.wrap); r.step = w ? steps.indexOf(w.closest('.step')) : 0; });
+  buildStepList();
+  const restored = restore();
+  bind(); syncReveals(); markSwatch();
+  goTo(cur, { initial:true });
+  try { history.replaceState({step:cur}, '', '#step-' + (cur+1)); } catch(e){}
+  if (restored) toast('Welcome back. Your saved answers are restored.');
+})();
+</script>
+</body>
+</html>
